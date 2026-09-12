@@ -13,6 +13,8 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedClientesRouteImport } from './routes/_authenticated/clientes'
+import { Route as AuthenticatedCotizacionesRouteImport } from './routes/_authenticated/cotizaciones'
+import { Route as AuthenticatedEquipoRouteImport } from './routes/_authenticated/equipo'
 import { Route as AuthenticatedInventarioRouteImport } from './routes/_authenticated/inventario'
 import { Route as AuthenticatedOnboardingRouteImport } from './routes/_authenticated/onboarding'
 import { Route as AuthenticatedOrdenesRouteImport } from './routes/_authenticated/ordenes'
@@ -36,6 +38,17 @@ const AuthenticatedClientesRoute = AuthenticatedClientesRouteImport.update({
   path: '/clientes',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedCotizacionesRoute =
+  AuthenticatedCotizacionesRouteImport.update({
+    id: '/cotizaciones',
+    path: '/cotizaciones',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedEquipoRoute = AuthenticatedEquipoRouteImport.update({
+  id: '/equipo',
+  path: '/equipo',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedInventarioRoute = AuthenticatedInventarioRouteImport.update({
   id: '/inventario',
   path: '/inventario',
@@ -56,6 +69,8 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/clientes': typeof AuthenticatedClientesRoute
+  '/cotizaciones': typeof AuthenticatedCotizacionesRoute
+  '/equipo': typeof AuthenticatedEquipoRoute
   '/inventario': typeof AuthenticatedInventarioRoute
   '/onboarding': typeof AuthenticatedOnboardingRoute
   '/ordenes': typeof AuthenticatedOrdenesRoute
@@ -64,6 +79,8 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/clientes': typeof AuthenticatedClientesRoute
+  '/cotizaciones': typeof AuthenticatedCotizacionesRoute
+  '/equipo': typeof AuthenticatedEquipoRoute
   '/inventario': typeof AuthenticatedInventarioRoute
   '/onboarding': typeof AuthenticatedOnboardingRoute
   '/ordenes': typeof AuthenticatedOrdenesRoute
@@ -74,6 +91,8 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
   '/_authenticated/clientes': typeof AuthenticatedClientesRoute
+  '/_authenticated/cotizaciones': typeof AuthenticatedCotizacionesRoute
+  '/_authenticated/equipo': typeof AuthenticatedEquipoRoute
   '/_authenticated/inventario': typeof AuthenticatedInventarioRoute
   '/_authenticated/onboarding': typeof AuthenticatedOnboardingRoute
   '/_authenticated/ordenes': typeof AuthenticatedOrdenesRoute
@@ -81,15 +100,32 @@ export interface FileRoutesById {
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    '/' | '/auth' | '/clientes' | '/inventario' | '/onboarding' | '/ordenes'
+    | '/'
+    | '/auth'
+    | '/clientes'
+    | '/cotizaciones'
+    | '/equipo'
+    | '/inventario'
+    | '/onboarding'
+    | '/ordenes'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/auth' | '/clientes' | '/inventario' | '/onboarding' | '/ordenes'
+  to:
+    | '/'
+    | '/auth'
+    | '/clientes'
+    | '/cotizaciones'
+    | '/equipo'
+    | '/inventario'
+    | '/onboarding'
+    | '/ordenes'
   id:
     | '__root__'
     | '/'
     | '/_authenticated'
     | '/auth'
     | '/_authenticated/clientes'
+    | '/_authenticated/cotizaciones'
+    | '/_authenticated/equipo'
     | '/_authenticated/inventario'
     | '/_authenticated/onboarding'
     | '/_authenticated/ordenes'
@@ -131,6 +167,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedClientesRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/cotizaciones': {
+      id: '/_authenticated/cotizaciones'
+      path: '/cotizaciones'
+      fullPath: '/cotizaciones'
+      preLoaderRoute: typeof AuthenticatedCotizacionesRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/equipo': {
+      id: '/_authenticated/equipo'
+      path: '/equipo'
+      fullPath: '/equipo'
+      preLoaderRoute: typeof AuthenticatedEquipoRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/inventario': {
       id: '/_authenticated/inventario'
       path: '/inventario'
@@ -157,6 +207,8 @@ declare module '@tanstack/react-router' {
 
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedClientesRoute: typeof AuthenticatedClientesRoute
+  AuthenticatedCotizacionesRoute: typeof AuthenticatedCotizacionesRoute
+  AuthenticatedEquipoRoute: typeof AuthenticatedEquipoRoute
   AuthenticatedInventarioRoute: typeof AuthenticatedInventarioRoute
   AuthenticatedOnboardingRoute: typeof AuthenticatedOnboardingRoute
   AuthenticatedOrdenesRoute: typeof AuthenticatedOrdenesRoute
@@ -164,6 +216,8 @@ interface AuthenticatedRouteRouteChildren {
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedClientesRoute: AuthenticatedClientesRoute,
+  AuthenticatedCotizacionesRoute: AuthenticatedCotizacionesRoute,
+  AuthenticatedEquipoRoute: AuthenticatedEquipoRoute,
   AuthenticatedInventarioRoute: AuthenticatedInventarioRoute,
   AuthenticatedOnboardingRoute: AuthenticatedOnboardingRoute,
   AuthenticatedOrdenesRoute: AuthenticatedOrdenesRoute,
