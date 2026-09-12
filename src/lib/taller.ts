@@ -76,3 +76,11 @@ export function relativeTime(iso: string) {
   if (hours < 24) return `Hace ${hours} h`;
   return `Hace ${Math.round(hours / 24)} d`;
 }
+
+export const FIELD =
+  "mt-1 w-full rounded-md border border-line bg-surface px-3 py-2 text-sm outline-none focus:border-safety";
+export const BTN_INK =
+  "snap-ui rounded-md bg-ink px-3 py-2 text-xs font-semibold text-ink-foreground hover:bg-ink/90 disabled:opacity-60";
+export const BTN_GHOST =
+  "snap-ui rounded-md border border-line bg-surface px-3 py-2 text-xs font-medium text-ink hover:bg-ink/5";
+export const CARD = "rounded-lg bg-surface ring-1 ring-black/5";
