@@ -1,6 +1,6 @@
 import { Link, useNavigate } from "@tanstack/react-router";
 import { useQueryClient } from "@tanstack/react-query";
-import type { ReactNode } from "react";
+import { useEffect, type ReactNode } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useWorkshop } from "@/hooks/useWorkshop";
 import { ROLE_LABELS, initials, todayLabel } from "@/lib/taller";
@@ -23,9 +23,13 @@ export function AppShell({
   actions?: ReactNode;
   children: ReactNode;
 }) {
-  const { data: membership } = useWorkshop();
+  const { data: membership, isFetched } = useWorkshop();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
+
+  useEffect(() => {
+    if (isFetched && !membership) navigate({ to: "/onboarding", replace: true });
+  }, [isFetched, membership, navigate]);
 
   async function signOut() {
     await queryClient.cancelQueries();
