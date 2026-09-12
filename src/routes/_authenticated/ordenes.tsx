@@ -741,6 +741,7 @@ function NewOrderForm({
 
       const member = members.find((m) => m.user_id === technician);
       const { error } = await supabase.from("repair_orders").insert({
+        code: "", // el taller genera el folio automáticamente
         workshop_id: workshopId,
         customer_id: finalCustomerId,
         device_type: deviceType || null,
