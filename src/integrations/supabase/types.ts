@@ -14,16 +14,362 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      customers: {
+        Row: {
+          created_at: string
+          email: string | null
+          id: string
+          name: string
+          notes: string | null
+          phone: string | null
+          workshop_id: string
+        }
+        Insert: {
+          created_at?: string
+          email?: string | null
+          id?: string
+          name: string
+          notes?: string | null
+          phone?: string | null
+          workshop_id: string
+        }
+        Update: {
+          created_at?: string
+          email?: string | null
+          id?: string
+          name?: string
+          notes?: string | null
+          phone?: string | null
+          workshop_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "customers_workshop_id_fkey"
+            columns: ["workshop_id"]
+            isOneToOne: false
+            referencedRelation: "workshops"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      order_items: {
+        Row: {
+          created_at: string
+          description: string
+          id: string
+          order_id: string
+          part_id: string | null
+          quantity: number
+          unit_price: number
+          workshop_id: string
+        }
+        Insert: {
+          created_at?: string
+          description: string
+          id?: string
+          order_id: string
+          part_id?: string | null
+          quantity?: number
+          unit_price?: number
+          workshop_id: string
+        }
+        Update: {
+          created_at?: string
+          description?: string
+          id?: string
+          order_id?: string
+          part_id?: string | null
+          quantity?: number
+          unit_price?: number
+          workshop_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "order_items_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "repair_orders"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "order_items_part_id_fkey"
+            columns: ["part_id"]
+            isOneToOne: false
+            referencedRelation: "parts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "order_items_workshop_id_fkey"
+            columns: ["workshop_id"]
+            isOneToOne: false
+            referencedRelation: "workshops"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      parts: {
+        Row: {
+          created_at: string
+          id: string
+          min_stock: number
+          name: string
+          sku: string | null
+          stock: number
+          unit_price: number
+          workshop_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          min_stock?: number
+          name: string
+          sku?: string | null
+          stock?: number
+          unit_price?: number
+          workshop_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          min_stock?: number
+          name?: string
+          sku?: string | null
+          stock?: number
+          unit_price?: number
+          workshop_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "parts_workshop_id_fkey"
+            columns: ["workshop_id"]
+            isOneToOne: false
+            referencedRelation: "workshops"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      payments: {
+        Row: {
+          amount: number
+          created_at: string
+          id: string
+          method: string
+          order_id: string
+          workshop_id: string
+        }
+        Insert: {
+          amount: number
+          created_at?: string
+          id?: string
+          method?: string
+          order_id: string
+          workshop_id: string
+        }
+        Update: {
+          amount?: number
+          created_at?: string
+          id?: string
+          method?: string
+          order_id?: string
+          workshop_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "payments_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "repair_orders"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "payments_workshop_id_fkey"
+            columns: ["workshop_id"]
+            isOneToOne: false
+            referencedRelation: "workshops"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          email: string | null
+          full_name: string | null
+          id: string
+        }
+        Insert: {
+          created_at?: string
+          email?: string | null
+          full_name?: string | null
+          id: string
+        }
+        Update: {
+          created_at?: string
+          email?: string | null
+          full_name?: string | null
+          id?: string
+        }
+        Relationships: []
+      }
+      repair_orders: {
+        Row: {
+          advance: number
+          code: string
+          created_at: string
+          customer_id: string | null
+          device_model: string | null
+          device_type: string | null
+          diagnosis: string | null
+          id: string
+          issue: string
+          labor_cost: number
+          serial_number: string | null
+          status: Database["public"]["Enums"]["order_status"]
+          technician_id: string | null
+          technician_name: string | null
+          updated_at: string
+          workshop_id: string
+        }
+        Insert: {
+          advance?: number
+          code: string
+          created_at?: string
+          customer_id?: string | null
+          device_model?: string | null
+          device_type?: string | null
+          diagnosis?: string | null
+          id?: string
+          issue: string
+          labor_cost?: number
+          serial_number?: string | null
+          status?: Database["public"]["Enums"]["order_status"]
+          technician_id?: string | null
+          technician_name?: string | null
+          updated_at?: string
+          workshop_id: string
+        }
+        Update: {
+          advance?: number
+          code?: string
+          created_at?: string
+          customer_id?: string | null
+          device_model?: string | null
+          device_type?: string | null
+          diagnosis?: string | null
+          id?: string
+          issue?: string
+          labor_cost?: number
+          serial_number?: string | null
+          status?: Database["public"]["Enums"]["order_status"]
+          technician_id?: string | null
+          technician_name?: string | null
+          updated_at?: string
+          workshop_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "repair_orders_customer_id_fkey"
+            columns: ["customer_id"]
+            isOneToOne: false
+            referencedRelation: "customers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "repair_orders_workshop_id_fkey"
+            columns: ["workshop_id"]
+            isOneToOne: false
+            referencedRelation: "workshops"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      workshop_members: {
+        Row: {
+          created_at: string
+          full_name: string | null
+          id: string
+          role: Database["public"]["Enums"]["workshop_role"]
+          user_id: string
+          workshop_id: string
+        }
+        Insert: {
+          created_at?: string
+          full_name?: string | null
+          id?: string
+          role?: Database["public"]["Enums"]["workshop_role"]
+          user_id: string
+          workshop_id: string
+        }
+        Update: {
+          created_at?: string
+          full_name?: string | null
+          id?: string
+          role?: Database["public"]["Enums"]["workshop_role"]
+          user_id?: string
+          workshop_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "workshop_members_workshop_id_fkey"
+            columns: ["workshop_id"]
+            isOneToOne: false
+            referencedRelation: "workshops"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      workshops: {
+        Row: {
+          code_prefix: string
+          created_at: string
+          created_by: string
+          currency: string
+          id: string
+          name: string
+          order_seq: number
+        }
+        Insert: {
+          code_prefix?: string
+          created_at?: string
+          created_by?: string
+          currency?: string
+          id?: string
+          name: string
+          order_seq?: number
+        }
+        Update: {
+          code_prefix?: string
+          created_at?: string
+          created_by?: string
+          currency?: string
+          id?: string
+          name?: string
+          order_seq?: number
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_workshop_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["workshop_role"]
+          _workshop_id: string
+        }
+        Returns: boolean
+      }
+      is_workshop_member: { Args: { _workshop_id: string }; Returns: boolean }
     }
     Enums: {
-      [_ in never]: never
+      order_status:
+        | "ingreso"
+        | "diagnostico"
+        | "en_progreso"
+        | "listo"
+        | "entregado"
+      workshop_role: "propietario" | "recepcion" | "tecnico"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +496,15 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      order_status: [
+        "ingreso",
+        "diagnostico",
+        "en_progreso",
+        "listo",
+        "entregado",
+      ],
+      workshop_role: ["propietario", "recepcion", "tecnico"],
+    },
   },
 } as const
