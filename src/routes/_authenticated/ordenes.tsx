@@ -203,7 +203,13 @@ function OrdenesPage() {
   };
 
   const updateOrder = useMutation({
-    mutationFn: async (patch: Partial<OrderRow> & { id: string }) => {
+    mutationFn: async (
+      patch: { id: string } & Partial<{
+        status: OrderStatus;
+        diagnosis: string;
+        labor_cost: number;
+      }>,
+    ) => {
       const { id, ...rest } = patch;
       const { error } = await supabase.from("repair_orders").update(rest).eq("id", id);
       if (error) throw error;
