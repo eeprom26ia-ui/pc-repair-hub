@@ -8,6 +8,13 @@
       "when": 1789242088536,
       "tag": "0000_create_taller_saas_schema",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1789405823254,
+      "tag": "0001_add_find_profile_by_email",
+      "breakpoints": true
     }
   ]
 }

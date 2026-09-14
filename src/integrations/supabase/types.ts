@@ -353,6 +353,14 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      find_profile_by_email: {
+        Args: { _email: string }
+        Returns: {
+          email: string
+          full_name: string
+          id: string
+        }[]
+      }
       has_workshop_role: {
         Args: {
           _role: Database["public"]["Enums"]["workshop_role"]
