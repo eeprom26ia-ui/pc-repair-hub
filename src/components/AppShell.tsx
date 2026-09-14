@@ -95,10 +95,12 @@ export function AppShell({
                 {item.label}
               </Link>
             ))}
-            <div className="px-2 pt-4 pb-1 font-mono text-[10px] tracking-widest text-white/30 uppercase">
-              Gestión
-            </div>
-            {GESTION.map((item) => (
+            {gestion.length > 0 && (
+              <div className="px-2 pt-4 pb-1 font-mono text-[10px] tracking-widest text-white/30 uppercase">
+                Gestión
+              </div>
+            )}
+            {gestion.map((item) => (
               <Link
                 key={item.to}
                 to={item.to}
