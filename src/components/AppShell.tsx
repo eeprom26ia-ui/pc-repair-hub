@@ -5,22 +5,28 @@ import { supabase } from "@/integrations/supabase/client";
 import { useWorkshop } from "@/hooks/useWorkshop";
 import { ROLE_LABELS, initials, todayLabel } from "@/lib/taller";
 
-const OPERACIONES = [
-  { to: "/ordenes", label: "Órdenes de reparación" },
-  { to: "/clientes", label: "Clientes" },
-  { to: "/inventario", label: "Inventario de piezas" },
-  { to: "/cotizaciones", label: "Cotizaciones y pagos" },
-] as const;
+import { roleCan, type Permission } from "@/lib/permissions";
 
-const GESTION = [{ to: "/equipo", label: "Equipo y roles" }] as const;
+const OPERACIONES = [
+  { to: "/ordenes", label: "Órdenes de reparación", perm: "ordenes.ver" },
+  { to: "/clientes", label: "Clientes", perm: "clientes.ver" },
+  { to: "/inventario", label: "Inventario de piezas", perm: "inventario.ver" },
+  { to: "/cotizaciones", label: "Cotizaciones y pagos", perm: "cobros.ver" },
+] as const satisfies ReadonlyArray<{ to: string; label: string; perm: Permission }>;
+
+const GESTION = [
+  { to: "/equipo", label: "Equipo y roles", perm: "equipo.ver" },
+] as const satisfies ReadonlyArray<{ to: string; label: string; perm: Permission }>;
 
 export function AppShell({
   title,
   actions,
+  permission,
   children,
 }: {
   title: string;
   actions?: ReactNode;
+  permission?: Permission;
   children: ReactNode;
 }) {
   const { data: membership, isFetched } = useWorkshop();
@@ -39,6 +45,10 @@ export function AppShell({
   }
 
   const workshopName = membership?.workshop.name ?? "Taller";
+  const role = membership?.role;
+  const operaciones = OPERACIONES.filter((i) => roleCan(role, i.perm));
+  const gestion = GESTION.filter((i) => roleCan(role, i.perm));
+  const blocked = !!membership && !!permission && !roleCan(role, permission);
 
   return (
     <div className="workfloor min-h-screen bg-paper font-body text-ink">
@@ -72,7 +82,7 @@ export function AppShell({
             <div className="px-2 py-1 font-mono text-[10px] tracking-widest text-white/30 uppercase">
               Operaciones
             </div>
-            {OPERACIONES.map((item) => (
+            {operaciones.map((item) => (
               <Link
                 key={item.to}
                 to={item.to}
@@ -85,10 +95,12 @@ export function AppShell({
                 {item.label}
               </Link>
             ))}
-            <div className="px-2 pt-4 pb-1 font-mono text-[10px] tracking-widest text-white/30 uppercase">
-              Gestión
-            </div>
-            {GESTION.map((item) => (
+            {gestion.length > 0 && (
+              <div className="px-2 pt-4 pb-1 font-mono text-[10px] tracking-widest text-white/30 uppercase">
+                Gestión
+              </div>
+            )}
+            {gestion.map((item) => (
               <Link
                 key={item.to}
                 to={item.to}
@@ -132,9 +144,24 @@ export function AppShell({
               <h1 className="font-display text-lg font-bold tracking-tight">{title}</h1>
               <p className="text-xs text-muted-foreground">Hoy · {todayLabel()}</p>
             </div>
-            <div className="flex items-center gap-2">{actions}</div>
+            <div className="flex items-center gap-2">{blocked ? null : actions}</div>
           </header>
-          <div className="flex-1 overflow-y-auto px-6 py-5">{children}</div>
+          <div className="flex-1 overflow-y-auto px-6 py-5">
+            {blocked ? (
+              <div className="mx-auto mt-10 max-w-md rounded-lg border border-line bg-surface p-6 text-center">
+                <div className="label-mono text-muted-foreground">Acceso restringido</div>
+                <h2 className="mt-2 font-display text-lg font-bold tracking-tight">
+                  Esta sección no está disponible para tu rol
+                </h2>
+                <p className="mt-2 text-sm text-muted-foreground">
+                  Tu rol actual es {role ? ROLE_LABELS[role] : "—"}. Pide al propietario del taller
+                  que ajuste tus permisos si necesitas entrar aquí.
+                </p>
+              </div>
+            ) : (
+              children
+            )}
+          </div>
         </main>
       </div>
     </div>
