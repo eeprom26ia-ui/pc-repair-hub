@@ -26,6 +26,24 @@ export const Route = createFileRoute("/_authenticated/equipo")({
   component: EquipoPage,
 });
 
+const PERMISSIONS: Record<WorkshopRole, string[]> = {
+  propietario: [
+    "Ve y edita todo: órdenes, clientes, inventario y cobros",
+    "Agrega miembros al taller y cambia los roles del equipo",
+    "Puede editar o eliminar el taller",
+  ],
+  recepcion: [
+    "Crea órdenes de reparación y registra clientes",
+    "Registra pagos y adelantos",
+    "Consulta el inventario de repuestos",
+  ],
+  tecnico: [
+    "Actualiza diagnóstico, estado y mano de obra de las órdenes",
+    "Agrega piezas a las órdenes (descuenta stock)",
+    "Consulta clientes e inventario",
+  ],
+};
+
 function EquipoPage() {
   const { data: membership } = useWorkshop();
   const wsId = membership?.workshop.id;
@@ -45,6 +63,9 @@ function EquipoPage() {
       return data ?? [];
     },
   });
+
+  const owner = (members.data ?? []).find((m) => m.role === "propietario");
+
 
   const [email, setEmail] = useState("");
   const [newRole, setNewRole] = useState<WorkshopRole>("tecnico");
