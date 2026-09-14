@@ -45,6 +45,10 @@ export function AppShell({
   }
 
   const workshopName = membership?.workshop.name ?? "Taller";
+  const role = membership?.role;
+  const operaciones = OPERACIONES.filter((i) => roleCan(role, i.perm));
+  const gestion = GESTION.filter((i) => roleCan(role, i.perm));
+  const blocked = !!membership && !!permission && !roleCan(role, permission);
 
   return (
     <div className="workfloor min-h-screen bg-paper font-body text-ink">
