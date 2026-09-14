@@ -1,10 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { AppShell } from "@/components/AppShell";
 import { supabase } from "@/integrations/supabase/client";
 import { useWorkshop } from "@/hooks/useWorkshop";
-import { CARD, FIELD, ROLE_LABELS, initials, type WorkshopRole } from "@/lib/taller";
+import { BTN_INK, CARD, FIELD, ROLE_LABELS, initials, type WorkshopRole } from "@/lib/taller";
 
 export const Route = createFileRoute("/_authenticated/equipo")({
   head: () => ({
