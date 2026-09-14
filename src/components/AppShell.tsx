@@ -5,22 +5,28 @@ import { supabase } from "@/integrations/supabase/client";
 import { useWorkshop } from "@/hooks/useWorkshop";
 import { ROLE_LABELS, initials, todayLabel } from "@/lib/taller";
 
-const OPERACIONES = [
-  { to: "/ordenes", label: "Órdenes de reparación" },
-  { to: "/clientes", label: "Clientes" },
-  { to: "/inventario", label: "Inventario de piezas" },
-  { to: "/cotizaciones", label: "Cotizaciones y pagos" },
-] as const;
+import { roleCan, type Permission } from "@/lib/permissions";
 
-const GESTION = [{ to: "/equipo", label: "Equipo y roles" }] as const;
+const OPERACIONES = [
+  { to: "/ordenes", label: "Órdenes de reparación", perm: "ordenes.ver" },
+  { to: "/clientes", label: "Clientes", perm: "clientes.ver" },
+  { to: "/inventario", label: "Inventario de piezas", perm: "inventario.ver" },
+  { to: "/cotizaciones", label: "Cotizaciones y pagos", perm: "cobros.ver" },
+] as const satisfies ReadonlyArray<{ to: string; label: string; perm: Permission }>;
+
+const GESTION = [
+  { to: "/equipo", label: "Equipo y roles", perm: "equipo.ver" },
+] as const satisfies ReadonlyArray<{ to: string; label: string; perm: Permission }>;
 
 export function AppShell({
   title,
   actions,
+  permission,
   children,
 }: {
   title: string;
   actions?: ReactNode;
+  permission?: Permission;
   children: ReactNode;
 }) {
   const { data: membership, isFetched } = useWorkshop();
