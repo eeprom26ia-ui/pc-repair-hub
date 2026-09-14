@@ -178,6 +178,58 @@ function EquipoPage() {
             </p>
           </div>
         )}
+
+        <div className={CARD}>
+          <div className="border-b border-line px-4 py-2.5">
+            <span className="font-display text-sm font-semibold tracking-tight">
+              Propietario del taller
+            </span>
+          </div>
+          {owner ? (
+            <div className="flex items-center gap-3 px-4 py-3">
+              <span className="grid size-9 shrink-0 place-items-center rounded-full bg-safety font-mono text-[10px] font-bold text-safety-foreground">
+                {initials(owner.full_name)}
+              </span>
+              <span className="min-w-0 flex-1">
+                <span className="block truncate text-sm font-medium">
+                  {owner.full_name ?? "Sin nombre"}
+                </span>
+                <span className="block font-mono text-[11px] text-muted-foreground">
+                  Control total del taller
+                </span>
+              </span>
+            </div>
+          ) : (
+            <p className="px-4 py-3 text-[13px] text-muted-foreground">
+              Este taller aún no tiene propietario asignado.
+            </p>
+          )}
+        </div>
+
+        <div className={CARD}>
+          <div className="border-b border-line px-4 py-2.5">
+            <span className="font-display text-sm font-semibold tracking-tight">
+              Permisos por rol
+            </span>
+          </div>
+          <ul className="divide-y divide-line">
+            {(Object.keys(ROLE_LABELS) as WorkshopRole[]).map((r) => (
+              <li key={r} className="px-4 py-3">
+                <span className="font-mono text-[11px] font-bold uppercase tracking-wider text-ink">
+                  {ROLE_LABELS[r]}
+                </span>
+                <ul className="mt-1.5 space-y-1">
+                  {PERMISSIONS[r].map((p) => (
+                    <li key={p} className="flex items-start gap-2 text-[13px] leading-snug">
+                      <span className="mt-1.5 size-1.5 shrink-0 rounded-full bg-safety" />
+                      {p}
+                    </li>
+                  ))}
+                </ul>
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
     </AppShell>
   );
