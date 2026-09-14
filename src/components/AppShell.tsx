@@ -144,9 +144,24 @@ export function AppShell({
               <h1 className="font-display text-lg font-bold tracking-tight">{title}</h1>
               <p className="text-xs text-muted-foreground">Hoy · {todayLabel()}</p>
             </div>
-            <div className="flex items-center gap-2">{actions}</div>
+            <div className="flex items-center gap-2">{blocked ? null : actions}</div>
           </header>
-          <div className="flex-1 overflow-y-auto px-6 py-5">{children}</div>
+          <div className="flex-1 overflow-y-auto px-6 py-5">
+            {blocked ? (
+              <div className="mx-auto mt-10 max-w-md rounded-lg border border-line bg-surface p-6 text-center">
+                <div className="label-mono text-muted-foreground">Acceso restringido</div>
+                <h2 className="mt-2 font-display text-lg font-bold tracking-tight">
+                  Esta sección no está disponible para tu rol
+                </h2>
+                <p className="mt-2 text-sm text-muted-foreground">
+                  Tu rol actual es {role ? ROLE_LABELS[role] : "—"}. Pide al propietario del taller
+                  que ajuste tus permisos si necesitas entrar aquí.
+                </p>
+              </div>
+            ) : (
+              children
+            )}
+          </div>
         </main>
       </div>
     </div>
