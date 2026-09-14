@@ -82,7 +82,7 @@ export function AppShell({
             <div className="px-2 py-1 font-mono text-[10px] tracking-widest text-white/30 uppercase">
               Operaciones
             </div>
-            {OPERACIONES.map((item) => (
+            {operaciones.map((item) => (
               <Link
                 key={item.to}
                 to={item.to}
